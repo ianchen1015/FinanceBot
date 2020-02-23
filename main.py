@@ -22,7 +22,7 @@ app = Flask(__name__)
 bot = telegram.Bot(token=(config['TELEGRAM']['ACCESS_TOKEN']))
 
 
-@app.route('/hook', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook_handler():
     """Set route /hook with POST method will trigger this method."""
     if request.method == "POST":
