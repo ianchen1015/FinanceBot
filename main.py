@@ -31,10 +31,42 @@ def webhook_handler():
 
 def reply_handler(bot, update):
     """Reply message."""
-    text = update.message.text
-    key = os.environ['TELEGRAM_ACCESS_TOKEN']
-    update.message.reply_text(text+key)
+    # text = update.message.text
+    # update.message.reply_text(text)
+    keyboard =[[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
+            InlineKeyboardButton("顯示", url='')]]
 
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    update.message.reply_text('請選擇動作：', reply_markup=reply_markup)
+
+
+@app.route('/add', methods=['POST'])
+def webhook_handler():
+    """Set route /hook with POST method will trigger this method."""
+    if request.method == "POST":
+        update = telegram.Update.de_json(request.get_json(force=True), bot)
+
+        # Update dispatcher process that handler to process this message
+        dispatcher.process_update(update)
+        print(os.environ['TELEGRAM_ACCESS_TOKEN'])
+    return 'ok'
+
+
+def reply_handler(bot, update):
+    """Reply message."""
+    # text = update.message.text
+    # update.message.reply_text(text)
+    keyboard =[[InlineKeyboardButton("生活", url=''),
+            InlineKeyboardButton("娛樂", url=''),
+            InlineKeyboardButton("教育", url=''),
+            InlineKeyboardButton("儲蓄", url=''),
+            InlineKeyboardButton("投資", url=''),
+            InlineKeyboardButton("贈與", url='')]]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
