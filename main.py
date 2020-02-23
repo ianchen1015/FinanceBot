@@ -47,16 +47,24 @@ def reply_methods(bot, update):
     """Reply message."""
     # text = update.message.text
     # update.message.reply_text(text)
-    keyboard =[[InlineKeyboardButton("生活", url=''),
-            InlineKeyboardButton("娛樂", url=''),
-            InlineKeyboardButton("教育", url=''),
-            InlineKeyboardButton("儲蓄", url=''),
-            InlineKeyboardButton("投資", url=''),
-            InlineKeyboardButton("贈與", url='')],[]]
+    # keyboard =[[InlineKeyboardButton("生活", url=''),
+    #         InlineKeyboardButton("娛樂", url=''),
+    #         InlineKeyboardButton("教育", url=''),
+    #         InlineKeyboardButton("儲蓄", url=''),
+    #         InlineKeyboardButton("投資", url=''),
+    #         InlineKeyboardButton("贈與", url='')],[]]
+
+    # reply_markup = InlineKeyboardMarkup(keyboard)
+
+    # update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
+    keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
+                InlineKeyboardButton("Option 2", callback_data='2')],
+
+            [InlineKeyboardButton("Option 3", callback_data='3')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
+    update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
