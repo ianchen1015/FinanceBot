@@ -34,8 +34,8 @@ def reply_handler(bot, update):
     """Reply message."""
     # text = update.message.text
     # update.message.reply_text(text)
-    keyboard =[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
-            InlineKeyboardButton("顯示", url='')]
+    keyboard =[[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
+            InlineKeyboardButton("顯示", url='')],[]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -47,12 +47,12 @@ def reply_methods(bot, update):
     """Reply message."""
     # text = update.message.text
     # update.message.reply_text(text)
-    keyboard =[InlineKeyboardButton("生活", url=''),
+    keyboard =[[InlineKeyboardButton("生活", url=''),
             InlineKeyboardButton("娛樂", url=''),
             InlineKeyboardButton("教育", url=''),
             InlineKeyboardButton("儲蓄", url=''),
             InlineKeyboardButton("投資", url=''),
-            InlineKeyboardButton("贈與", url='')]
+            InlineKeyboardButton("贈與", url='')],[]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
