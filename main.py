@@ -41,19 +41,8 @@ def reply_handler(bot, update):
     update.message.reply_text('請選擇動作：', reply_markup=reply_markup)
 
 
-@app.route('/add', methods=['POST'])
-def webhook_handler():
-    """Set route /hook with POST method will trigger this method."""
-    if request.method == "POST":
-        update = telegram.Update.de_json(request.get_json(force=True), bot)
-
-        # Update dispatcher process that handler to process this message
-        dispatcher.process_update(update)
-        print(os.environ['TELEGRAM_ACCESS_TOKEN'])
-    return 'ok'
-
-
-def reply_handler(bot, update):
+@app.route('/add')
+def reply_methods(bot, update):
     """Reply message."""
     # text = update.message.text
     # update.message.reply_text(text)
