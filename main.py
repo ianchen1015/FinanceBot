@@ -1,14 +1,9 @@
-import configparser
 import logging
 import os
 
 import telegram
 from flask import Flask, request
 from telegram.ext import Dispatcher, MessageHandler, Filters
-
-# Load data from config.ini file
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -19,7 +14,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Initial bot by Telegram access token
-bot = telegram.Bot(token=(config['TELEGRAM']['ACCESS_TOKEN']))
+bot = telegram.Bot(token=(os.environ['TELEGRAM_ACCESS_TOKEN']))
 
 
 @app.route('/webhook', methods=['POST'])
@@ -30,13 +25,14 @@ def webhook_handler():
 
         # Update dispatcher process that handler to process this message
         dispatcher.process_update(update)
+        print(os.environ['TELEGRAM_ACCESS_TOKEN'])
     return 'ok'
 
 
 def reply_handler(bot, update):
     """Reply message."""
     text = update.message.text
-    key = os.environ['ACCESS_TOKEN']
+    key = os.environ['TELEGRAM_ACCESS_TOKEN']
     update.message.reply_text(text+key)
 
 
