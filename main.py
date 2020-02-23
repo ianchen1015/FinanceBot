@@ -36,10 +36,10 @@ def reply_handler(bot, update):
     # update.message.reply_text(text)
     # keyboard =[[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
     #         InlineKeyboardButton("顯示", url='')]]
-    keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
-            InlineKeyboardButton("Option 2", callback_data='2')],
-
-        [InlineKeyboardButton("Option 3", callback_data='3')]]
+    add_url=os.environ['HEROKU_URL'] + 'add/'
+    keyboard = [[InlineKeyboardButton("近期交易", callback_data='1'),
+            InlineKeyboardButton("顯示餘額", callback_data='2')],
+        [InlineKeyboardButton("記帳", url=add_url)]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -49,26 +49,18 @@ def reply_handler(bot, update):
 @app.route('/add')
 def reply_methods(bot, update):
     """Reply message."""
-    # text = update.message.text
-    # update.message.reply_text(text)
-    # keyboard =[[InlineKeyboardButton("生活", url=''),
-    #         InlineKeyboardButton("娛樂", url=''),
-    #         InlineKeyboardButton("教育", url=''),
-    #         InlineKeyboardButton("儲蓄", url=''),
-    #         InlineKeyboardButton("投資", url=''),
-    #         InlineKeyboardButton("贈與", url='')],[]]
-
-    # reply_markup = InlineKeyboardMarkup(keyboard)
-
-    # update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
-    keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
-                InlineKeyboardButton("Option 2", callback_data='2')],
-
-            [InlineKeyboardButton("Option 3", callback_data='3')]]
+    text = update.message.text
+    update.message.reply_text(text)
+    keyboard =[[InlineKeyboardButton("生活", callback_data='1'),
+            InlineKeyboardButton("娛樂", callback_data='1'),
+            InlineKeyboardButton("教育", callback_data='1')],[
+            InlineKeyboardButton("儲蓄", callback_data='1'),
+            InlineKeyboardButton("投資", callback_data='1'),
+            InlineKeyboardButton("贈與", callback_data='1')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+    update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
