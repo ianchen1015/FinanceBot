@@ -1,4 +1,5 @@
 import logging
+import itertools
 import os
 
 import telegram
@@ -61,13 +62,13 @@ def reply_handler(bot, update):
     if input_text in ['取消']:
         reply_with_keyboard('請選擇動作：', main_keyboard)
     # Show actions 
-    elif input_text in main_keyboard:
+    elif input_text in list(itertools.chain(*main_keyboard)):
         if input_text == '記帳':
             reply_with_keyboard('記帳種類：', category_keyboard)
         else:
             reply_with_keyboard(main_reply_text, main_keyboard)
     # Choose category
-    elif input_text in category_keyboard:
+    elif input_text in list(itertools.chain(*category_keyboard)):
         reply_with_keyboard('請輸入數字', cancel_keyboard)
     # Enter price
     elif input_text.isnumeric():
