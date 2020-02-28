@@ -79,7 +79,7 @@ def reply_handler(bot, update):
             update_param({'state': 'main'})
             reply_with_keyboard('請選擇動作：', main_keyboard)
     # Choosing category
-    elif input_text in list(itertools.chain(*category_keyboard)):
+    elif state == 'category':#input_text in list(itertools.chain(*category_keyboard)):
         update_param({'state': 'name', 'category': input_text})
         reply_with_keyboard('請輸入項目', cancel_keyboard)
     # Entering name
@@ -88,8 +88,8 @@ def reply_handler(bot, update):
         reply_with_keyboard('請輸入價格', cancel_keyboard)
     # Entering price
     elif state == 'price':
-        update_param({'state': 'main', 'price': input_text})
         price = int(input_text)
+        update_param({'state': 'main', 'price': str(price)})
         t = time.localtime(time.time())
         result = requests.post(os.environ['IAN_SPREADSHEET_URL'], data = {
             'action': 'add',
@@ -100,8 +100,8 @@ def reply_handler(bot, update):
             'name': data[user.id]['name'],
             'price': data[user.id]['price']
         })
-        reply_text(result.text)
         reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
+        update_param({'state': 'main', 'category':'', 'name':'', 'price': ''})
     else:
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
