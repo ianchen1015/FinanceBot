@@ -1,5 +1,6 @@
 import logging
 import itertools
+import requests
 import time
 import os
 
@@ -35,6 +36,12 @@ def webhook_handler():
 def reply_handler(bot, update):
     """Reply message."""
 
+    input_text = update.message.text
+    user = update.message.from_user
+
+    data = {}
+    data[user.id] = {'category': '', 'name': '', 'price': ''}
+
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
         update.message.reply_text(reply_text, reply_markup = reply_markup)  
@@ -43,10 +50,8 @@ def reply_handler(bot, update):
         update.message.reply_text(reply_text)  
     
     main_keyboard = [['記帳'], ['近期交易', '顯示餘額']]
-    category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與']]
+    category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與'], ['取消']]
     cancel_keyboard = [['取消']]
-
-    input_text = update.message.text
 
     # Return to home
     if input_text in ['取消']:
@@ -59,18 +64,28 @@ def reply_handler(bot, update):
             reply_with_keyboard(main_reply_text, main_keyboard)
     # Choose category
     elif input_text in list(itertools.chain(*category_keyboard)):
+        data[user.id] = {**data[user.id], **{'category': input_text}}
         reply_with_keyboard('請輸入數字', cancel_keyboard)
     # Enter price
     elif input_text.isnumeric():
         price = int(input_text)
+        t = time.localtime(time.time())
+        result = requests.post(os.environ['IAN_SPREADSHEET_URL'], data = {
+            'action': 'add',
+            'date': '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday),
+            'month': t.tm_mon,
+            'time': '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec),
+            'category': 'add',
+            'name': 'add',
+            'price': 'add'
+
+        })
+        reply_text(result.text)
         reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
     else:
         reply_with_keyboard('請輸入數字', cancel_keyboard)
     
-    t = time.localtime(time.time())
-    date = '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday)
-    timestamp = '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec)
-    reply_text(date + timestamp)
+    reply_text(str(data[user.id]))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
