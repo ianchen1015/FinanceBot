@@ -61,7 +61,7 @@ def reply_handler(bot, update):
     if input_text in ['取消']:
         reply_with_keyboard('請選擇動作：', main_keyboard)
     # Show actions 
-    if input_text in main_keyboard:
+    elif input_text in main_keyboard:
         if input_text == '記帳':
             reply_with_keyboard('記帳種類：', category_keyboard)
         else:
