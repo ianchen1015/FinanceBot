@@ -49,7 +49,8 @@ def reply_handler(bot, update):
 
     def update_param(params):
         global data
-        data[user.id] = data[user.id].update(params)
+        user_data = data[user.id]
+        user_data = user_data.update(params)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
