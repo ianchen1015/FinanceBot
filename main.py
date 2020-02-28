@@ -32,6 +32,7 @@ def webhook_handler():
         print(os.environ['TELEGRAM_ACCESS_TOKEN'])
     return 'ok'
 
+data = {}
 
 def reply_handler(bot, update):
     """Reply message."""
@@ -39,8 +40,8 @@ def reply_handler(bot, update):
     input_text = update.message.text
     user = update.message.from_user
 
-    data = {}
-    data[user.id] = {'category': '', 'name': '', 'price': ''}
+    # data = {}
+    # data[user.id] = {'category': '', 'name': '', 'price': ''}
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
@@ -61,10 +62,10 @@ def reply_handler(bot, update):
         if input_text == '記帳':
             reply_with_keyboard('記帳種類：', category_keyboard)
         else:
-            reply_with_keyboard(main_reply_text, main_keyboard)
+            reply_with_keyboard('請選擇動作：', main_keyboard)
     # Choose category
     elif input_text in list(itertools.chain(*category_keyboard)):
-        data[user.id] = {**data[user.id], **{'category': input_text}}
+        data[user.id] = data[user.id].update({'category': input_text})
         reply_with_keyboard('請輸入數字', cancel_keyboard)
     # Enter price
     elif input_text.isnumeric():
@@ -85,7 +86,7 @@ def reply_handler(bot, update):
     else:
         reply_with_keyboard('請輸入數字', cancel_keyboard)
     
-    reply_text(str(data[user.id]))
+    reply_text(user.id + str(data[user.id]))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
