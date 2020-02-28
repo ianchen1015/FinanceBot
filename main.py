@@ -60,11 +60,9 @@ def reply_handler(bot, update):
     input_text = update.message.text
 
     if input_text in main_keyboard + ['取消']:
-        reply_keyboard, reply_text = category_keyboard, category_reply_text
-        reply_with_keyboard(reply_text, reply_markup)
+        reply_with_keyboard(category_reply_text, category_keyboard)
     elif input_text in  category_keyboard:
-        reply_keyboard, reply_text = main_keyboard, main_reply_text
-        reply_with_keyboard(reply_text, reply_markup)
+        reply_with_keyboard(main_reply_text, main_keyboard)
     elif input_text.isnumeric():
         price = int(input_text)
         reply_with_keyboard('記入一筆：' + str(price), cancel_keyboard)
