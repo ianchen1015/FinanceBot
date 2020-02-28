@@ -20,6 +20,8 @@ app = Flask(__name__)
 # Initial bot by Telegram access token
 bot = telegram.Bot(token=(os.environ['TELEGRAM_ACCESS_TOKEN']))
 
+# Temp params for users
+data = {}
 
 @app.route('/webhook', methods=['POST'])
 def webhook_handler():
@@ -31,9 +33,6 @@ def webhook_handler():
         dispatcher.process_update(update)
         print(os.environ['TELEGRAM_ACCESS_TOKEN'])
     return 'ok'
-
-# Temp params for users
-data = {}
 
 def reply_handler(bot, update):
     """Reply message."""
