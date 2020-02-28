@@ -71,7 +71,7 @@ def reply_handler(bot, update):
         price = int(input_text)
         reply_with_keyboard('記入一筆：' + str(price), cancel_keyboard)
     else:
-        reply_with_keyboard('請輸入數字' + str(price), cancel_keyboard)
+        reply_with_keyboard('請輸入數字', cancel_keyboard)
 
 # @app.route('/add')
 # def reply_methods(bot, update):
