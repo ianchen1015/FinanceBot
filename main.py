@@ -57,7 +57,7 @@ def reply_handler(bot, update):
     category_reply_text = '記帳種類：'
     cancel_keyboard = [['取消']]
 
-    input_text = update.message.input_text
+    input_text = update.message.text
 
     if input_text in main_keyboard + ['取消']:
         reply_keyboard = category_keyboard
