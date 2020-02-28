@@ -1,5 +1,6 @@
 import logging
 import itertools
+import time
 import os
 
 import telegram
@@ -46,13 +47,11 @@ def reply_handler(bot, update):
     # reply_markup = InlineKeyboardMarkup(keyboard)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
-        reply_markup = ReplyKeyboardMarkup(
-            reply_keyboard,
-            resize_keyboard = True)
+        reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
         update.message.reply_text(reply_text, reply_markup = reply_markup)  
     
-    # def reply_text(reply_text):
-    #     update.message.reply_text(reply_text)  
+    def reply_text(reply_text):
+        update.message.reply_text(reply_text)  
     
     main_keyboard = [['記帳'], ['近期交易', '顯示餘額']]
     category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與']]
@@ -78,22 +77,11 @@ def reply_handler(bot, update):
         reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
     else:
         reply_with_keyboard('請輸入數字', cancel_keyboard)
-
-# @app.route('/add')
-# def reply_methods(bot, update):
-#     """Reply message."""
-#     text = update.message.text
-#     update.message.reply_text(text)
-#     keyboard =[[InlineKeyboardButton("生活", callback_data='1'),
-#             InlineKeyboardButton("娛樂", callback_data='1'),
-#             InlineKeyboardButton("教育", callback_data='1')],[
-#             InlineKeyboardButton("儲蓄", callback_data='1'),
-#             InlineKeyboardButton("投資", callback_data='1'),
-#             InlineKeyboardButton("贈與", callback_data='1')]]
-
-#     reply_markup = InlineKeyboardMarkup(keyboard)
-
-#     update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
+    
+    t = time.localtime(time.time())
+    date = '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday)
+    timestamp = '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec)
+    reply_text(date, timestamp)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
