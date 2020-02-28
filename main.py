@@ -32,6 +32,7 @@ def webhook_handler():
         print(os.environ['TELEGRAM_ACCESS_TOKEN'])
     return 'ok'
 
+# Temp params for users
 data = {}
 
 def reply_handler(bot, update):
@@ -42,6 +43,11 @@ def reply_handler(bot, update):
 
     # data = {}
     # data[user.id] = {'category': '', 'name': '', 'price': ''}
+    if user.id not in data:
+        data[user.id] = data[user.id].update({'state': 'main'})
+
+    def update_param(params):
+        data[user.id] = data[user.id].update(params)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
@@ -54,21 +60,31 @@ def reply_handler(bot, update):
     category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與'], ['取消']]
     cancel_keyboard = [['取消']]
 
+    # State routing
+
     # Return to home
     if input_text in ['取消']:
+        update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
-    # Show actions 
+    # Choosing actions 
     elif input_text in list(itertools.chain(*main_keyboard)):
         if input_text == '記帳':
-            reply_with_keyboard('記帳種類：', category_keyboard)
+            update_param({'state': 'category'})
+            reply_with_keyboard('請輸入種類', cancel_keyboard)
         else:
+            update_param({'state': 'main'})
             reply_with_keyboard('請選擇動作：', main_keyboard)
-    # Choose category
+    # Choosing category
     elif input_text in list(itertools.chain(*category_keyboard)):
-        data[user.id] = data[user.id].update({'category': input_text})
-        reply_with_keyboard('請輸入數字', cancel_keyboard)
-    # Enter price
-    elif input_text.isnumeric():
+        update_param({'state': 'name', 'category': input_text})
+        reply_with_keyboard('請輸入項目', cancel_keyboard)
+    # Entering name
+    elif state == 'name':
+        update_param({'state': 'price', 'name': input_text})
+        reply_with_keyboard('請輸入價格', cancel_keyboard)
+    # Entering price
+    elif state == 'price':
+        update_param({'state': 'main', 'price': input_text})
         price = int(input_text)
         t = time.localtime(time.time())
         result = requests.post(os.environ['IAN_SPREADSHEET_URL'], data = {
@@ -76,16 +92,16 @@ def reply_handler(bot, update):
             'date': '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday),
             'month': t.tm_mon,
             'time': '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec),
-            'category': 'add',
-            'name': 'add',
-            'price': 'add'
-
+            'category': data[user.id]['category'],
+            'name': data[user.id]['name'],
+            'price': data[user.id]['price']
         })
         reply_text(result.text)
         reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
     else:
-        reply_with_keyboard('請輸入數字', cancel_keyboard)
-    
+        update_param({'state': 'main'})
+        reply_with_keyboard('請選擇動作：', main_keyboard)
+
     reply_text(user.id + str(data[user.id]))
 
 # New a dispatcher for bot
