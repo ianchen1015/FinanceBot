@@ -45,6 +45,7 @@ def reply_handler(bot, update):
     global data
     if user.id not in data:
         data[user.id] = {'state': 'main'}
+        print("========== ", data[user.id])
 
     def update_param(params):
         global data
