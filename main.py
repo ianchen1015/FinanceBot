@@ -3,7 +3,7 @@ import os
 
 import telegram
 from flask import Flask, request
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 from telegram.ext import Dispatcher, MessageHandler, Filters
 
 # Enable logging
@@ -36,31 +36,43 @@ def reply_handler(bot, update):
     # update.message.reply_text(text)
     # keyboard =[[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
     #         InlineKeyboardButton("顯示", url='')]]
-    add_url=os.environ['HEROKU_URL'] + 'add/'
-    keyboard = [[InlineKeyboardButton("近期交易", callback_data='1'),
-            InlineKeyboardButton("顯示餘額", callback_data='2')],
-        [InlineKeyboardButton("記帳", url=add_url)]]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # add_url=os.environ['HEROKU_URL'] + 'add/'
+    # keyboard = [[InlineKeyboardButton("近期交易", callback_data='1'),
+    #         InlineKeyboardButton("顯示餘額", callback_data='2')],
+    #     [InlineKeyboardButton("記帳", url=add_url)]]
 
-    update.message.reply_text('請選擇動作：', reply_markup=reply_markup)
+    # reply_markup = InlineKeyboardMarkup(keyboard)
 
+    def reply_main_keyboard():
+        reply_keyboard = [
+            ['記帳'],
+            ['近期交易', '顯示餘額']]
+        reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard = True)
+        update.message.reply_text('請選擇動作：', reply_markup = reply_markup)
 
-@app.route('/add')
-def reply_methods(bot, update):
-    """Reply message."""
-    text = update.message.text
-    update.message.reply_text(text)
-    keyboard =[[InlineKeyboardButton("生活", callback_data='1'),
-            InlineKeyboardButton("娛樂", callback_data='1'),
-            InlineKeyboardButton("教育", callback_data='1')],[
-            InlineKeyboardButton("儲蓄", callback_data='1'),
-            InlineKeyboardButton("投資", callback_data='1'),
-            InlineKeyboardButton("贈與", callback_data='1')]]
+    def reply_catogory_keyboard():
+        reply_keyboard = [
+            ['生活', '娛樂', '教育'],
+            ['儲蓄', '投資', '贈與']]
+        reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard = True)
+        update.message.reply_text('請選擇動作：', reply_markup = reply_markup)
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+# @app.route('/add')
+# def reply_methods(bot, update):
+#     """Reply message."""
+#     text = update.message.text
+#     update.message.reply_text(text)
+#     keyboard =[[InlineKeyboardButton("生活", callback_data='1'),
+#             InlineKeyboardButton("娛樂", callback_data='1'),
+#             InlineKeyboardButton("教育", callback_data='1')],[
+#             InlineKeyboardButton("儲蓄", callback_data='1'),
+#             InlineKeyboardButton("投資", callback_data='1'),
+#             InlineKeyboardButton("贈與", callback_data='1')]]
 
-    update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
+#     reply_markup = InlineKeyboardMarkup(keyboard)
+
+#     update.message.reply_text('請選擇種類：', reply_markup=reply_markup)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
