@@ -44,7 +44,7 @@ def reply_handler(bot, update):
 
     # reply_markup = InlineKeyboardMarkup(keyboard)
 
-    def reply_with_keyboard(reply_text, reply_markup):
+    def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard = True)
         update.message.reply_text(reply_text, reply_markup = reply_markup)  
     
@@ -60,12 +60,10 @@ def reply_handler(bot, update):
     input_text = update.message.text
 
     if input_text in main_keyboard + ['取消']:
-        reply_keyboard = category_keyboard
-        reply_text = category_reply_text
+        reply_keyboard, reply_text = category_keyboard, category_reply_text
         reply_with_keyboard(reply_text, reply_markup)
     elif input_text in  category_keyboard:
-        reply_keyboard = main_keyboard
-        reply_text = main_reply_text
+        reply_keyboard, reply_text = main_keyboard, main_reply_text
         reply_with_keyboard(reply_text, reply_markup)
     elif input_text.isnumeric():
         price = int(input_text)
