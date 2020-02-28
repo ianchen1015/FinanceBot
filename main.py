@@ -44,7 +44,7 @@ def reply_handler(bot, update):
     # data = {}
     # data[user.id] = {'category': '', 'name': '', 'price': ''}
     if user.id not in data:
-        data[user.id] = data[user.id].update({'state': 'main'})
+        data[user.id] = {'state': 'main'}
 
     def update_param(params):
         data[user.id] = data[user.id].update(params)
@@ -102,7 +102,7 @@ def reply_handler(bot, update):
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
 
-    reply_text(user.id + str(data[user.id]))
+    reply_text('User: {}\n{}'.format(str(user.id), str(data[user.id])))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
