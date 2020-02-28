@@ -52,17 +52,24 @@ def reply_handler(bot, update):
     #     update.message.reply_text(reply_text)  
     
     main_keyboard = [['記帳'], ['近期交易', '顯示餘額']]
-    main_reply_text = '請選擇動作：'
     category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與']]
-    category_reply_text = '記帳種類：'
     cancel_keyboard = [['取消']]
 
     input_text = update.message.text
 
-    if input_text in main_keyboard + ['取消']:
-        reply_with_keyboard(main_reply_text, main_keyboard)
-    elif input_text in  category_keyboard:
-        reply_with_keyboard(category_reply_text, category_keyboard)
+    # Return to home
+    if input_text in ['取消']:
+        reply_with_keyboard('請選擇動作：', main_keyboard)
+    # Show actions 
+    if input_text in main_keyboard:
+        if input_text == '記帳':
+            reply_with_keyboard('記帳種類：', category_keyboard)
+        else:
+            reply_with_keyboard(main_reply_text, main_keyboard)
+    # Choose category
+    elif input_text in category_keyboard:
+        reply_with_keyboard('請輸入數字', cancel_keyboard)
+    # Enter price
     elif input_text.isnumeric():
         price = int(input_text)
         reply_with_keyboard('記入一筆：' + str(price), cancel_keyboard)
