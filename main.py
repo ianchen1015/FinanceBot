@@ -46,7 +46,9 @@ def reply_handler(bot, update):
     # reply_markup = InlineKeyboardMarkup(keyboard)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
-        reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard = True)
+        reply_markup = ReplyKeyboardMarkup(
+            reply_keyboard,
+            resize_keyboard = True)
         update.message.reply_text(reply_text, reply_markup = reply_markup)  
     
     # def reply_text(reply_text):
@@ -73,7 +75,7 @@ def reply_handler(bot, update):
     # Enter price
     elif input_text.isnumeric():
         price = int(input_text)
-        reply_with_keyboard('記入一筆：' + str(price), cancel_keyboard)
+        reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
     else:
         reply_with_keyboard('請輸入數字', cancel_keyboard)
 
