@@ -47,6 +47,7 @@ def reply_handler(bot, update):
         data[user.id] = {'state': 'main'}
 
     def update_param(params):
+        global data
         data[user.id] = data[user.id].update(params)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
