@@ -43,6 +43,7 @@ def reply_handler(bot, update):
 
     # data = {}
     # data[user.id] = {'category': '', 'name': '', 'price': ''}
+    global data
     if user.id not in data:
         data[user.id] = {'state': 'main'}
 
@@ -57,7 +58,7 @@ def reply_handler(bot, update):
     def reply_text(reply_text):
         update.message.reply_text(reply_text)  
     
-    main_keyboard = [['記帳'], ['近期交易', '顯示餘額']]
+    main_keyboard = [['開始記帳'], ['近期交易', '顯示餘額']]
     category_keyboard = [['生活', '娛樂', '教育'], ['儲蓄', '投資', '贈與'], ['取消']]
     cancel_keyboard = [['取消']]
 
@@ -69,9 +70,9 @@ def reply_handler(bot, update):
         reply_with_keyboard('請選擇動作：', main_keyboard)
     # Choosing actions 
     elif input_text in list(itertools.chain(*main_keyboard)):
-        if input_text == '記帳':
+        if input_text == '開始記帳':
             update_param({'state': 'category'})
-            reply_with_keyboard('請輸入種類', cancel_keyboard)
+            reply_with_keyboard('請輸入種類', category_keyboard)
         else:
             update_param({'state': 'main'})
             reply_with_keyboard('請選擇動作：', main_keyboard)
