@@ -34,17 +34,6 @@ def webhook_handler():
 
 def reply_handler(bot, update):
     """Reply message."""
-    # text = update.message.text
-    # update.message.reply_text(text)
-    # keyboard =[[InlineKeyboardButton("記帳", url=os.environ['HEROKU_URL'] + 'add/'),
-    #         InlineKeyboardButton("顯示", url='')]]
-
-    # add_url=os.environ['HEROKU_URL'] + 'add/'
-    # keyboard = [[InlineKeyboardButton("近期交易", callback_data='1'),
-    #         InlineKeyboardButton("顯示餘額", callback_data='2')],
-    #     [InlineKeyboardButton("記帳", url=add_url)]]
-
-    # reply_markup = InlineKeyboardMarkup(keyboard)
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
@@ -81,7 +70,7 @@ def reply_handler(bot, update):
     t = time.localtime(time.time())
     date = '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday)
     timestamp = '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec)
-    reply_text(date, timestamp)
+    reply_text(date + timestamp)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
