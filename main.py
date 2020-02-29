@@ -48,7 +48,7 @@ def reply_handler(bot, update):
     # if user.id not in data:
     #     data[user.id] = {'state': 'main'}
     #     print("========== ", data[user.id])
-    if session.get(user_id) == True:
+    if session.get(user_id) == False:
         session[user_id] = {'state': 'main'}
 
     def update_param(params):
@@ -73,7 +73,11 @@ def reply_handler(bot, update):
     state = session[user_id]['state']
 
     # Return to home
-    if input_text in ['取消']:
+    if input_text == 'debugmode':
+        session['debugmode'] = True
+    elif input_text == 'debugmodeoff':
+        session['debugmode'] = False
+    elif input_text in ['取消']:
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
         update_param({'state': 'main', 'category':'', 'name':'', 'price': ''})
@@ -113,7 +117,8 @@ def reply_handler(bot, update):
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
 
-    reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
+    if session['debugmode'] == True:
+        reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
