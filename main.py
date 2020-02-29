@@ -48,6 +48,7 @@ def reply_handler(bot, update):
     # if user.id not in data:
     #     data[user.id] = {'state': 'main'}
     #     print("========== ", data[user.id])
+    session[user_id] = {'state': 'main'}
     if session.get(user_id) == False:
         session[user_id] = {'state': 'main'}
         print('----', session[user_id])
@@ -74,11 +75,11 @@ def reply_handler(bot, update):
     print('[[[[[', session[user_id])
     state = session[user_id]['state']
 
-    # Return to home
     if input_text == 'debugmode':
         session['debugmode'] = True
     elif input_text == 'debugmodeoff':
         session['debugmode'] = False
+    # Return to home
     elif input_text in ['取消']:
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
