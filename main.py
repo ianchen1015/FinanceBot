@@ -7,7 +7,7 @@ import os
 import telegram
 from flask import Flask, request, session
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
-from telegram.ext import Dispatcher, MessageHandler, Filters
+from telegram.ext import Dispatcher, MessageHandler, Filters, Updater
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -35,7 +35,7 @@ def webhook_handler():
         print(os.environ['TELEGRAM_ACCESS_TOKEN'])
     return 'ok'
 
-def reply_handler(bot, update):
+def reply_handler(bot, update, context):
     """Reply message."""
 
     input_text = update.message.text
@@ -48,6 +48,8 @@ def reply_handler(bot, update):
     # if user.id not in data:
     #     data[user.id] = {'state': 'main'}
     #     print("========== ", data[user.id])
+    print('======', context.user_data)
+
     session[user_id] = {'state': 'main'}
     if session.get(user_id) == False:
         session[user_id] = {'state': 'main'}
@@ -122,6 +124,8 @@ def reply_handler(bot, update):
 
     if session['debugmode'] == True:
         reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
+
+updater = Updater('TOKEN', use_context=True)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
