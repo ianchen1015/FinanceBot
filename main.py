@@ -50,6 +50,7 @@ def reply_handler(bot, update):
     #     print("========== ", data[user.id])
     if session.get(user_id) == False:
         session[user_id] = {'state': 'main'}
+        print('----', session[user_id])
 
     def update_param(params):
         # global data
