@@ -70,6 +70,7 @@ def reply_handler(bot, update):
 
     # State routing
     # state = data[user.id]['state']
+    print('[[[[[', session[user_id])
     state = session[user_id]['state']
 
     # Return to home
