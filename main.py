@@ -40,6 +40,7 @@ def reply_handler(bot, update):
 
     input_text = update.message.text
     user = update.message.from_user
+    user_id = str(user.id)
 
     # data = {}
     # data[user.id] = {'category': '', 'name': '', 'price': ''}
@@ -47,14 +48,14 @@ def reply_handler(bot, update):
     # if user.id not in data:
     #     data[user.id] = {'state': 'main'}
     #     print("========== ", data[user.id])
-    if session.get(user.id) == True:
-        session[user.id] = {'state': 'main'}
+    if session.get(user_id) == True:
+        session[user_id] = {'state': 'main'}
 
     def update_param(params):
         # global data
         # user_data = data[user.id]
         # user_data = user_data.update(params)
-        session[user.id] = session[user.id].update({'state': 'main'})
+        session[user_id] = session[user_id].update({'state': 'main'})
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
@@ -69,7 +70,7 @@ def reply_handler(bot, update):
 
     # State routing
     # state = data[user.id]['state']
-    state = session[user.id]['state']
+    state = session[user_id]['state']
 
     # Return to home
     if input_text in ['取消']:
@@ -102,9 +103,9 @@ def reply_handler(bot, update):
             'date': '{}/{}/{}'.format(t.tm_year, t.tm_mon, t.tm_mday),
             'month': t.tm_mon,
             'time': '{}:{}:{}'.format(t.tm_hour, t.tm_min, t.tm_sec),
-            'category': data[user.id]['category'],
-            'name': data[user.id]['name'],
-            'price': data[user.id]['price']
+            'category': data[user_id]['category'],
+            'name': data[user_id]['name'],
+            'price': data[user_id]['price']
         })
         reply_with_keyboard('記入一筆：' + str(price), main_keyboard)
         update_param({'state': 'main', 'category':'', 'name':'', 'price': ''})
@@ -112,7 +113,7 @@ def reply_handler(bot, update):
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
 
-    reply_text('User: {}\n{}'.format(str(user.id), str(session[user.id])))
+    reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
