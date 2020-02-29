@@ -54,7 +54,7 @@ def reply_handler(bot, update):
         print('----', session[user_id])
 
     def update_param(params):
-        # global data
+        global session
         # user_data = data[user.id]
         # user_data = user_data.update(params)
         session[user_id] = session[user_id].update({'state': 'main'})
