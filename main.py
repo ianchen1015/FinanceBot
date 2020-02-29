@@ -5,7 +5,7 @@ import time
 import os
 
 import telegram
-from flask import Flask, request
+from flask import Flask, request, session
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 from telegram.ext import Dispatcher, MessageHandler, Filters
 
@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 # Initial Flask app
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)
 
 # Initial bot by Telegram access token
 bot = telegram.Bot(token=(os.environ['TELEGRAM_ACCESS_TOKEN']))
@@ -42,15 +43,18 @@ def reply_handler(bot, update):
 
     # data = {}
     # data[user.id] = {'category': '', 'name': '', 'price': ''}
-    global data
-    if user.id not in data:
-        data[user.id] = {'state': 'main'}
-        print("========== ", data[user.id])
+    # global data
+    # if user.id not in data:
+    #     data[user.id] = {'state': 'main'}
+    #     print("========== ", data[user.id])
+    if session.get(user.id) == True:
+        session[user.id] = {'state': 'main'}
 
     def update_param(params):
-        global data
-        user_data = data[user.id]
-        user_data = user_data.update(params)
+        # global data
+        # user_data = data[user.id]
+        # user_data = user_data.update(params)
+        session[user.id] = session[user.id].update({'state': 'main'})
 
     def reply_with_keyboard(reply_text, reply_keyboard):
         reply_markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard = True)
@@ -70,6 +74,7 @@ def reply_handler(bot, update):
     if input_text in ['取消']:
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
+        update_param({'state': 'main', 'category':'', 'name':'', 'price': ''})
     # Choosing actions 
     elif input_text in list(itertools.chain(*main_keyboard)):
         if input_text == '開始記帳':
@@ -106,7 +111,7 @@ def reply_handler(bot, update):
         update_param({'state': 'main'})
         reply_with_keyboard('請選擇動作：', main_keyboard)
 
-    reply_text('User: {}\n{}'.format(str(user.id), str(data[user.id])))
+    reply_text('User: {}\n{}'.format(str(user.id), str(session[user.id])))
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
