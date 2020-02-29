@@ -68,7 +68,8 @@ def reply_handler(bot, update):
     cancel_keyboard = [['取消']]
 
     # State routing
-    state = data[user.id]['state']
+    # state = data[user.id]['state']
+    state = session[user.id]['state']
 
     # Return to home
     if input_text in ['取消']:
