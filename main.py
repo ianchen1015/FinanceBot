@@ -129,7 +129,7 @@ def reply_handler(bot, update, context):
 
 # New a dispatcher for bot
 # dispatcher = Dispatcher(bot, None)
-dispatcher = updater.dispatcher(bot, use_context = True)
+dispatcher = Dispatcher(bot, use_context = True)
 
 # Add handler for handling message, there are many kinds of message. For this handler, it particular handle text
 # message.
