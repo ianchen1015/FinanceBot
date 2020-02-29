@@ -128,7 +128,7 @@ def reply_handler(bot, update, context):
 # updater = Updater(token = os.environ['TELEGRAM_ACCESS_TOKEN'], use_context=True)
 
 # New a dispatcher for bot
-dispatcher = Dispatcher(bot, None, use_context=True)
+dispatcher = Dispatcher(bot, None)
 
 # Add handler for handling message, there are many kinds of message. For this handler, it particular handle text
 # message.
