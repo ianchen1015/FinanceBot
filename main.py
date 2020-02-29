@@ -19,10 +19,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
 # Initial bot by Telegram access token
-bot = telegram.Bot(token=(os.environ['TELEGRAM_ACCESS_TOKEN']))
+# bot = telegram.Bot(token=(os.environ['TELEGRAM_ACCESS_TOKEN']))
 
 # Temp params for users
-data = {}
+# data = {}
 
 @app.route('/webhook', methods=['POST'])
 def webhook_handler():
@@ -129,11 +129,16 @@ def reply_handler(bot, update, context):
 
 # New a dispatcher for bot
 # dispatcher = Dispatcher(bot, None)
-dispatcher = Dispatcher(bot, use_context = True)
+# dispatcher = Dispatcher(bot)
+
+updater = Updater(os.environ['TELEGRAM_ACCESS_TOKEN'], use_context=True)
+dp = updater.dispatcher
 
 # Add handler for handling message, there are many kinds of message. For this handler, it particular handle text
 # message.
-dispatcher.add_handler(MessageHandler(Filters.text, reply_handler))
+dp.add_handler(MessageHandler(Filters.text, reply_handler))
+
+updater.start_polling()
 
 if __name__ == "__main__":
     # Running server
