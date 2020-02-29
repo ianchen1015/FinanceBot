@@ -125,11 +125,11 @@ def reply_handler(bot, update, context):
     if session['debugmode'] == True:
         reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
 
-updater = Updater(use_context=True)
+# updater = Updater(use_context=True)
 
 # New a dispatcher for bot
 # dispatcher = Dispatcher(bot, None)
-dispatcher = updater.dispatcher(bot, None)
+dispatcher = updater.dispatcher(bot, use_context = True)
 
 # Add handler for handling message, there are many kinds of message. For this handler, it particular handle text
 # message.
