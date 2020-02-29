@@ -125,7 +125,7 @@ def reply_handler(bot, update, context):
     if session['debugmode'] == True:
         reply_text('User: {}\n{}'.format(user_id, str(session[user_id])))
 
-updater = Updater(token = os.environ['TELEGRAM_ACCESS_TOKEN'], use_context=True)
+# updater = Updater(token = os.environ['TELEGRAM_ACCESS_TOKEN'], use_context=True)
 
 # New a dispatcher for bot
 dispatcher = Dispatcher(bot, None)
